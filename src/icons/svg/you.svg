@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="15px" height="16px" viewBox="0 0 15 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51 (57462) - http://www.bohemiancoding.com/sketch -->
+    <title>多边形</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FF94B8" offset="0%"></stop>
+            <stop stop-color="#FE4C4C" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="首页（抢单）-copy-6" transform="translate(-30.000000, -446.000000)">
+            <g id="Group-3" transform="translate(-106.000000, 240.000000)">
+                <g id="多边形" transform="translate(136.000000, 206.000000)">
+                    <rect id="Rectangle-3" fill-opacity="0.01" fill="#FFFFFF" fill-rule="nonzero" x="0" y="0" width="15" height="16"></rect>
+                    <path d="M9.06110911,0.409895953 L13.4084308,2.86520451 C14.392446,3.42096303 15,4.45707311 15,5.57943403 L15,10.420566 C15,11.5429269 14.392446,12.579037 13.4084308,13.1347955 L9.06110911,15.590104 C8.09343735,16.136632 6.90656265,16.136632 5.93889089,15.590104 L1.59156922,13.1347955 C0.607553966,12.579037 4.80024146e-15,11.5429269 3.20016098e-15,10.420566 L0,5.57943403 C-1.20006037e-15,4.45707311 0.607553966,3.42096303 1.59156922,2.86520451 L5.93889089,0.409895953 C6.90656265,-0.136631984 8.09343735,-0.136631984 9.06110911,0.409895953 Z" id="Polygon" fill="url(#linearGradient-1)" fill-rule="nonzero"></path>
+                    <text id="优" font-family="FZZCHJW--GB1-0, FZZhengHeiS-B-GB" font-size="11" font-weight="normal" fill="#FFFFFF">
+                        <tspan x="2" y="12">优</tspan>
+                    </text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
