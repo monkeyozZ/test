@@ -1,20 +1,17 @@
 import * as types from './mutation-type'
-// import authapi from '@/api/auth'
+import auth from '@/utils/auth'
 
 export const setLoginstatus = ({commit}, params) => {
   commit(types.SETLOGINSTATUS, params)
+  auth.setLoginStatus(params)
 }
-export const setcode = ({ commit }, params) => {
-  /* authapi.sendCode(params).then((result) => {
-    commit(types.SETINFO, result.data.data)
-    // console.log(result)
-  }).catch((err) => {
-    console.log(err)
-  }) */
+export const setuserinfo = ({ commit }, params) => {
+  commit(types.SETUSERINFO, params)
+  auth.setUserInfo(params)
 }
 
 export const inituserinfo = ({ commit }, obj) => {
-  commit(types.SETINFO, obj)
+  commit(types.SETUSERINFO, obj)
 }
 
 export const setHeaderText = ({ commit }, str) => {
@@ -22,4 +19,35 @@ export const setHeaderText = ({ commit }, str) => {
 }
 export const setRightText = ({ commit }, obj) => {
   commit(types.SETHEADERRIGHTTEXT, obj)
+}
+export const setIdCardImg = ({ commit }, obj) => {
+  commit(types.SETIDCARDIMG, obj)
+}
+export const setAptitudesImg = ({ commit }, obj) => {
+  commit(types.SETAPTITUDESIMG, obj)
+}
+export const setCity = ({ commit }, obj) => {
+  commit(types.SETCITY, obj)
+}
+export const setCurrentCity = ({ commit }, obj) => {
+  commit(types.CURRENTCITY, obj)
+}
+export const setOrderCondition = ({ commit }, obj) => {
+  commit(types.SETORDERCONDITION, obj)
+}
+export const setCustomerCondition = ({ commit }, obj) => {
+  commit(types.SETCUSTOMERCONDITION, obj)
+}
+export const setAllReadyStatus = ({ commit }, obj) => {
+  commit(types.SETALLREADY, obj)
+}
+export const setNewsType = ({ commit }, obj) => {
+  commit(types.SETNEWSTYPE, obj)
+}
+export const setJdbAuthToken = ({ commit }, obj) => {
+  commit(types.SETJDBTOKEN, obj)
+  auth.setToken(obj)
+}
+export const setPositionY = ({ commit }, obj) => {
+  commit(types.SETPOSITIONY, obj)
 }

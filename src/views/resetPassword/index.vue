@@ -1,29 +1,45 @@
 <template>
   <div class="register">
-    <svg-icon icon-class="close" class="close" @click.native="GoBack"></svg-icon>
+    <svg-icon icon-class="loginBack" class="close" @click.native="GoBack"></svg-icon>
     <h1 class="title">重置密码</h1>
+    <h2 class="title2">设置一个好记的密码吧~</h2>
     <div class="form_box">
       <div class="passsword_box">
-        <my-input :type="inputType" v-model="form.password" @validateFun="passValidate" @resetValidate="resetPassValidate" :errorMessages="passErrorMsg" :maxlength="16">
-        请设置密码
+        <my-input :type="inputType"
+        v-model="form.password"
+        @validateFun="passValidate"
+        @resetValidate="resetPassValidate"
+        :errorMessages="passErrorMsg"
+        :maxlength="16"
+        placeholder="请设置密码">
         </my-input>
-        <svg-icon :icon-class="iconType" class="eye" @click.native="showPassword"></svg-icon>
+        <div class="eye" @click="showPassword">
+          <svg-icon :icon-class="iconType"></svg-icon>
+        </div>
       </div>
 
       <div class="passsword_box">
-        <my-input :type="inputType2" v-model="form.password2" @validateFun="passValidate2" @resetValidate="resetPassValidate2" :errorMessages="passErrorMsg2" :maxlength="16">
-        请确认密码
+        <my-input :type="inputType2"
+        v-model="form.password2"
+        @validateFun="passValidate2"
+        @resetValidate="resetPassValidate2"
+        :errorMessages="passErrorMsg2"
+        :maxlength="16"
+        placeholder="请确认密码">
         </my-input>
-        <svg-icon :icon-class="iconType2" class="eye" @click.native="showPassword2"></svg-icon>
+        <div class="eye" @click="showPassword2">
+          <svg-icon :icon-class="iconType2"></svg-icon>
+        </div>
       </div>
     </div>
-    <x-button class="submit" action-type="button" :show-loading="loading" @click.native="submit" :disabled="isdisable">重置密码</x-button>
+    <button class="submit" @click="submit" :disabled="isdisable">重置密码</button>
   </div>
 </template>
 
 <script>
 import MyInput from '@/components/input'
 import { XButton, Confirm, TransferDomDirective as TransferDom, Spinner } from 'vux'
+import ownApi from '@/api/own'
 export default {
   directives: {
     TransferDom
@@ -46,9 +62,12 @@ export default {
       iconType: 'closeEye',
       inputType2: 'password',
       iconType2: 'closeEye',
-      loading: false,
-      isdisable: false,
-      isSubmit: ''
+      isdisable: true
+    }
+  },
+  computed: {
+    mobile () {
+      return this.$route.query.mobile
     }
   },
   methods: {
@@ -56,34 +75,35 @@ export default {
       if (this.form.password.length !== 0) {
         let passRegex = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/
         if (!passRegex.test(this.form.password)) {
-          this.passErrorMsg = '请输入6-16位数字或字母'
-          this.isSubmit = false
+          this.passErrorMsg = '请输入6-16位数字与字母组合'
+          return false
         } else {
-          this.isSubmit = true
+          this.passErrorMsg = ''
+          return true
         }
       } else {
         this.passErrorMsg = '请输入密码'
-        this.isSubmit = false
+        return false
       }
     },
     passValidate2 () {
       if (this.form.password2.length !== 0) {
         let passRegex = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/
         if (!passRegex.test(this.form.password2)) {
-          this.passErrorMsg2 = '请输入6-16位数字或字母'
-          this.isSubmit = false
+          this.passErrorMsg2 = '请输入6-16位数字与字母组合'
+          return false
         } else {
           if (this.form.password !== this.form.password2) {
             this.passErrorMsg2 = '前后密码输入不一致'
-            this.isSubmit = false
+            return false
           } else {
             this.passErrorMsg2 = ''
-            this.isSubmit = true
+            return true
           }
         }
       } else {
         this.passErrorMsg2 = '请再次输入密码'
-        this.isSubmit = false
+        return false
       }
     },
     resetPassValidate () {
@@ -93,6 +113,7 @@ export default {
       this.passErrorMsg2 = ''
     },
     showPassword () {
+      this.passErrorMsg = ''
       if (this.iconType === 'closeEye') {
         this.iconType = 'eye'
         this.inputType = 'text'
@@ -102,6 +123,7 @@ export default {
       }
     },
     showPassword2 () {
+      this.passErrorMsg = ''
       if (this.iconType2 === 'closeEye') {
         this.iconType2 = 'eye'
         this.inputType2 = 'text'
@@ -111,60 +133,110 @@ export default {
       }
     },
     GoBack () {
-      history.back(-1)
+      document.activeElement.blur() // 部分手机在键盘未关闭时返回导致页面高度变小
+      setTimeout(() => {
+        history.back(-1)
+      }, 400)
     },
     submit () {
-      if (this.isSubmit.length !== 0) {
-        if (this.isSubmit) {
-          // 提交
-          this.isdisable = true
-          this.loading = true
+      if (this.passValidate() && this.passValidate2()) {
+        // 提交
+        let obj = {
+          mobile: this.mobile,
+          password: this.form.password
         }
-      } else {
-        this.passValidate()
-        this.passValidate2()
+        this.isdisable = true
+        ownApi.resetPassword(obj).then((res) => {
+          if (res.data.code === 0) {
+            this.$vux.toast.text(res.data.data, 'top')
+            this.$router.push('/passlogin')
+          } else {
+            // Todo
+            this.isdisable = false
+          }
+        }).catch((err) => {
+          if (err) {
+            this.isdisable = false
+          }
+        })
       }
     }
+  },
+  watch: {
+    'form.password2': {
+      handler () {
+        if (this.form.password2.length >= 6) {
+          this.isdisable = false
+        } else {
+          this.isdisable = true
+        }
+      }
+    },
+    deep: true
   }
 }
 </script>
 
 <style lang="less" scoped>
   .register{
-    padding: 0 28px;
+    padding: 0 20px;
     .close{
       margin-top: 30px;
-      font-size: 15px;
-      width: 15px;
-      height: 15px;
+      width: 25px;
+      height: 25px;
       color: #444444;
     }
     .title{
-      margin: 21px 0 14px 0;
-      font-size: 24px;
-      line-height: 33px;
-      font-family:PingFangSC-Medium;
+      margin: 21px 0 8px 0;
+      font-size: 27px;
+      color: #2F2926;
+      line-height: 38px;
+      font-family:PingFangTC-Medium;
+      font-weight: 500;
+    }
+    .title2{
+      font-size: 17px;
+      color: #999999;
+      line-height: 24px;
+      font-family:PingFangTC-Medium;
+      font-weight: 500;
     }
     .form_box{
-      margin-top: 90px;
+      margin-top: 10px;
       .passsword_box{
         position: relative;
-        margin-top: 45px;
+        margin: 25px 0 30px 0;
         .eye{
           position: absolute;
           top: 50%;
-          right: 2px;
+          right: 0px;
+          width: 42px;
+          height: 35px;
+          line-height: 42px;
+          text-align: center;
           transform: translate(0,-50%);
-          color:#EEEEEE;
+          color:#979797;
         }
       }
     }
     .submit{
-      margin-top: 95px;
-      background:linear-gradient(151deg,rgba(66,179,249,1) 0%,rgba(31,124,240,1) 100%);
-      border-radius:4px;
-      color: #fff;
-      line-height: 47px;
-    }
+          display: block;
+          margin: 25px auto;
+          width: 100%;
+          line-height: 47px;
+          border: none;
+          outline: none;
+          border-radius: 25px;
+          font-size: 18px;
+          color: #fff;
+          background: #347FFF;
+          &::after{
+            content: none;
+            border: none;
+          }
+          &:disabled{
+            background: #A4C6FE;
+          }
+        }
   }
 </style>

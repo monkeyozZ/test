@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>积分</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="30.1392924%" y1="5.31281365%" x2="78.5039761%" y2="94.9114746%" id="linearGradient-1">
+            <stop stop-color="#EDD3B8" offset="0%"></stop>
+            <stop stop-color="#AB8351" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="35.5104856%" y1="4.41099322%" x2="78.2322978%" y2="91.4087431%" id="linearGradient-2">
+            <stop stop-color="#FEECD9" offset="0%"></stop>
+            <stop stop-color="#D0B08A" offset="100%"></stop>
+        </linearGradient>
+        <path d="M20,36 C11.163444,36 4,28.836556 4,20 C4,11.163444 11.163444,4 20,4 C28.836556,4 36,11.163444 36,20 C36,28.836556 28.836556,36 20,36 Z M20,33 C27.1797017,33 33,27.1797017 33,20 C33,12.8202983 27.1797017,7 20,7 C12.8202983,7 7,12.8202983 7,20 C7,27.1797017 12.8202983,33 20,33 Z" id="path-3"></path>
+        <filter x="-3.1%" y="-3.1%" width="112.5%" height="112.5%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="1" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.756862745   0 0 0 0 0.607843137   0 0 0 0 0.447058824  0 0 0 1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <polygon id="path-5" points="20.5 25.5589309 15.5038254 27.3766445 15.6886708 22.0632956 12.4160196 17.8733555 17.526435 16.4072389 20.5 12 23.473565 16.4072389 28.5839804 17.8733555 25.3113292 22.0632956 25.4961746 27.3766445"></polygon>
+        <filter x="-9.3%" y="-17.6%" width="118.6%" height="114.0%" filterUnits="objectBoundingBox" id="filter-6">
+            <feOffset dx="0" dy="-1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.717647059   0 0 0 0 0.560784314   0 0 0 0 0.384313725  0 0 0 0.539175725 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="12.25订单详情-积分中心" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="我的积分" transform="translate(-183.000000, -746.000000)">
+            <g id="分组-5" transform="translate(28.000000, 743.000000)">
+                <g id="每日分享">
+                    <g id="分组-3" transform="translate(0.000000, 3.000000)">
+                        <g id="分组-6" transform="translate(155.000000, 0.000000)">
+                            <g id="积分">
+                                <g id="分组-2">
+                                    <circle id="椭圆形" fill="url(#linearGradient-1)" cx="20" cy="20" r="20"></circle>
+                                    <g id="合并形状">
+                                        <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                                        <use fill="url(#linearGradient-2)" fill-rule="evenodd" xlink:href="#path-3"></use>
+                                    </g>
+                                    <g id="星形">
+                                        <use fill="black" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-5"></use>
+                                        <use fill="url(#linearGradient-2)" fill-rule="evenodd" xlink:href="#path-5"></use>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

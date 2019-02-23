@@ -1,230 +1,436 @@
 <template>
-  <div class="details_box">
-    <div class="base_info_box">
-      <ul>
-        <li>
-          <p>
-            <span class="name_box">
-              <svg-icon icon-class="you"></svg-icon>
-              张先生
-            </span>
-            <span class="money">50万</span>
-          </p>
-        </li>
-        <li>
-          <p class="time">申请时间：2018-09-03 13:5</p>
-        </li>
-        <li>
-          <p class="detail_info">
-            <span>
-              <svg-icon icon-class="age"></svg-icon>
-              20岁
-            </span>
-            <span>
-              <svg-icon icon-class="address"></svg-icon>
-              西双版纳
-            </span>
-            <span>
-              <svg-icon icon-class="profession"></svg-icon>
-              自由职业者
-            </span>
-          </p>
-        </li>
-      </ul>
-    </div>
-    <div class="mobile_tip_box">
-      <div class="mobile_box">
-        <flexbox :gutter="0" wrap="wrap">
-        <flexbox-item :span="4">
-          <div class="mobile_detail">
-            <svg-icon icon-class="mobile"></svg-icon>
-            <span>137****4758</span>
-          </div>
-        </flexbox-item>
-        <flexbox-item :span="4">
-            <p class="tip">抢单后可沟通</p>
-        </flexbox-item>
-        <flexbox-item :span="4">
-          <button>立即沟通</button>
-        </flexbox-item>
-        </flexbox>
+<div style="background: #F8F9F9;">
+  <svg-icon icon-class="orderDetailsTop" class="top_bg"></svg-icon>
+  <scroll ref="scroll" class="detailsWrapper" :style="{height: height}">
+    <div class="details_box" v-waves>
+      <div class="base_info_box">
+        <ul>
+          <li>
+            <p>
+              <span class="name_box">
+                <span v-if="orderData.gender === '男'">{{orderData.surname | substring2}}先生</span>
+                <span v-else>{{orderData.surname | substring2}}女士</span>
+              </span>
+              <span class="money"><em>{{orderData.loanMoneyStr}}</em>万元</span>
+              <span class="tag_box" :class="orderData.type === 'ORDINARY' ? 'tao' : 'you'">{{orderData.type | transformTypeText}}</span>
+              <span class="time">{{orderData.longApplyTime | transformDate}}</span>
+            </p>
+            <p class="detail_info">
+              <span>
+                <svg-icon icon-class="address"></svg-icon>
+                {{orderData.city}}
+              </span>
+              <span>
+                <svg-icon icon-class="age"></svg-icon>
+                {{orderData.age}}岁
+              </span>
+            </p>
+          </li>
+          <li class="mobile_tip_box">
+            <div class="mobile_box">
+              <flexbox :gutter="0" wrap="wrap">
+                <flexbox-item :span="8">
+                    <p class="tip">备注：抢单后可沟通</p>
+                </flexbox-item>
+                <flexbox-item :span="4">
+                  <svg-icon icon-class="beizhu"></svg-icon>
+                  <svg-icon icon-class="detailsMobile"></svg-icon>
+                </flexbox-item>
+              </flexbox>
+            </div>
+          </li>
+        </ul>
       </div>
-      <div class="tip_box">
-        <p>
-         备注：这个电话号码没打通，需要再次联系；这个号码是空号，找 客服咨询；这个客户在忙，有待进一步沟通
-        </p>
+
+      <div class="base_info_list">
+        <h2 class="title">
+          基本信息
+        </h2>
+        <ul class="item_box">
+          <li>
+            <p>性别<span>{{orderData.gender}}</span></p>
+          </li>
+          <!-- <li>
+            <p>职业<span>{{orderData.occupation}}</span></p>
+          </li> -->
+          <li>
+            <p>社保<span>{{orderData.socialSecurity}}</span></p>
+          </li>
+          <li>
+            <p>公积金<span>{{orderData.providentFund}}</span></p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="asset_info_list">
+        <h2 class="title">
+          资产信息
+        </h2>
+        <ul class="item_box">
+          <li>
+            <p>信用卡<span>{{orderData.creditCard}}</span></p>
+          </li>
+          <li>
+            <p>微粒贷<span>{{orderData.weilidai}}</span></p>
+          </li>
+          <li>
+            <p>名下房产<span>{{orderData.house}}</span></p>
+          </li>
+          <li>
+            <p>名下车产<span>{{orderData.car}}</span></p>
+          </li>
+          <li>
+            <p>个人保险<span>{{orderData.policy}}</span></p>
+          </li>
+        </ul>
       </div>
     </div>
+    <div v-transfer-dom>
+      <confirm v-model="showConfirm"
+        confirm-text="确认"
+        cancel-text="取消"
+        @on-cancel="onCancel"
+        @on-confirm="onConfirm"
+        class="indexConfirm">
+          <p class="confirmText">{{confirmText}}</p>
+      </confirm>
 
-    <div class="base_info_list">
-      <h2 class="title">
-        <svg-icon icon-class="baseinfo"></svg-icon>
-        基本信息
-      </h2>
-      <ul class="item_box">
-        <li>
-          <p>性别<span>男</span></p>
-        </li>
-        <li>
-          <p>职业<span>自由职业者</span></p>
-        </li>
-        <li>
-          <p>社保<span>有</span></p>
-        </li>
-        <li>
-          <p>公积金<span>有</span></p>
-        </li>
-      </ul>
-    </div>
+      <confirm v-model="showConfirm2"
+        confirm-text="继续抢单"
+        cancel-text="立即查看"
+        @on-cancel="onCancel2"
+        @on-confirm="onConfirm2"
+        class="indexConfirm">
+          <p class="confirmText">恭喜您，抢单成功！</p>
+      </confirm>
 
-    <div class="asset_info_list">
-      <h2 class="title">
-        <svg-icon icon-class="asset"></svg-icon>
-        资产信息
-      </h2>
-      <ul class="item_box">
-        <li>
-          <p>信用卡<span>有</span></p>
-        </li>
-        <li>
-          <p>微粒贷<span>无</span></p>
-        </li>
-        <li>
-          <p>名下房产<span>贷款房</span></p>
-        </li>
-        <li>
-          <p>名下车产<span>按揭车</span></p>
-        </li>
-        <li>
-          <p>个人保险<span>≥2400</span></p>
-        </li>
-      </ul>
+      <confirm v-model="showConfirm3"
+        confirm-text="去充值"
+        cancel-text="取消"
+        @on-cancel="onCancel3"
+        @on-confirm="onConfirm3"
+        class="indexConfirm">
+          <p class="confirmText">{{confirmText3}}</p>
+      </confirm>
+
+      <confirm v-model="showConfirm4"
+        confirm-text="去认证"
+        cancel-text="取消"
+        @on-cancel="onCancel4"
+        @on-confirm="onConfirm4"
+        class="indexConfirm">
+          <p class="confirmText">通过身份认证才能抢单哦！</p>
+      </confirm>
+
+      <confirm v-model="showConfirm5"
+        confirm-text="确定"
+        cancel-text="取消"
+        @on-cancel="onCancel5"
+        @on-confirm="onConfirm5"
+        class="indexConfirm">
+          <p class="confirmText">该订单已被抢</p>
+      </confirm>
     </div>
-    <div class="button_box">
-      <button class="button">立即抢单</button>
-    </div>
+  </scroll>
+  <div class="button_box" ref="button_box">
+    <button class="button" :disabled="orderData.status === 'SOLD'" @click="order(orderData.type, orderData.discountPrice, orderData.id)">{{orderData.status === 'SOLD'?'已被抢' : '立即抢单'}}</button>
   </div>
+</div>
 </template>
 
 <script>
-import { Flexbox, FlexboxItem, XButton } from 'vux'
+import { Flexbox, FlexboxItem, XButton, Confirm, TransferDomDirective as TransferDom } from 'vux'
+import detailsApi from '@/api/details'
+import orderPayApi from '@/api/orderPay'
+import bus from '@/utils/eventBus'
+import ownApi from '@/api/own'
 export default {
   components: {
     Flexbox,
     FlexboxItem,
-    XButton
+    XButton,
+    Confirm
+  },
+  directives: {
+    TransferDom
   },
   data () {
     return {
-      id: 1
+      showConfirm: false,
+      showConfirm2: false,
+      showConfirm3: false,
+      showConfirm4: false,
+      showConfirm5: false,
+      confirmText: '',
+      confirmText3: '',
+      orderData: {},
+      customerId: '',
+      customerCate: '',
+      height: ''
     }
   },
   computed: {
-    /* id () {
+    id () {
       return this.$route.params.id
-    } */
+    },
+    headerHeight () {
+      return localStorage.getItem('headerHeight') ? localStorage.getItem('headerHeight') : ''
+    }
   },
   methods: {
     getdata () {
-      console.log(this.$route.params.id)
+      let obj = {
+        id: this.id
+      }
+      detailsApi.getOrderDetails(obj).then((res) => {
+        if (res.data.code === 0) {
+          this.orderData = res.data.data
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+    order (type, price, id) {
+      this.customerId = id
+      this.checkOrder(type, price)
+    },
+    checkOrder (type, price) {
+      ownApi.getUserInfo().then((res) => { // 是否认证
+        if (res.data.code === 0) {
+          if (res.data.data.creditStatus !== 'SUCCESS') {
+            this.showConfirm4 = true
+          } else {
+            let obj = {
+              customerId: this.customerId
+            }
+            orderPayApi.checkOrder(obj).then((res) => {
+              if (res.data.code === 0) {
+                if (type === 'ORDINARY') {
+                  this.confirmText = `确认花费${price}积分抢单？`
+                  this.customerCate = 'ORDINARY'
+                } else {
+                  this.confirmText = `确认花费${price}淘单币抢单？`
+                  this.customerCate = 'OPTIMIZATION'
+                }
+                this.showConfirm = true
+              }
+              if (res.data.code === -1) {
+                if (type === 'ORDINARY') {
+                  this.confirmText3 = '您的积分不足，是否立即充值？'
+                  this.showConfirm3 = true
+                } else {
+                  this.confirmText3 = '您的淘单币不足，是否立即充值？'
+                  this.showConfirm3 = true
+                }
+              }
+            })
+          }
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+    buildOrder () {
+      this.showConfirm = false
+      let obj = {
+        customerId: this.customerId
+      }
+      orderPayApi.builtOrder(obj).then((res) => {
+        if (res.data.code === 0) {
+          this.showConfirm2 = true
+        }
+        if (res.data.code === -1) {
+          if (res.data.msg === '1') {
+            this.confirmText3 = '您的淘单币不足，是否立即充值？'
+            this.showConfirm3 = true
+          }
+          if (res.data.msg === '2') {
+            this.confirmText3 = '您的积分不足，是否立即充值？'
+            this.showConfirm3 = true
+          }
+          if (res.data.msg === '3') {
+            this.showConfirm4 = true
+          }
+          if (res.data.msg === '4') {
+            this.showConfirm5 = true
+          }
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+    onConfirm () {
+      this.buildOrder()
+    },
+    onConfirm2 () {
+      this.showConfirm2 = false
+      this.$router.push('/')
+      bus.$emit('getList')
+    },
+    onConfirm3 () {
+      this.$router.push('/recharge')
+    },
+    onConfirm4 () {
+      this.$router.push('/certification')
+    },
+    onConfirm5 () {
+      this.showConfirm5 = false
+    },
+    onCancel () {
+      this.showConfirm = false
+    },
+    onCancel2 () {
+      this.$router.push({path: '/customer', query: { type: this.customerCate, time: new Date().getTime() }})
+    },
+    onCancel3 () {
+      this.showConfirm3 = false
+    },
+    onCancel4 () {
+      this.showConfirm4 = false
+    },
+    onCancel5 () {
+      this.showConfirm5 = false
     }
   },
   mounted () {
     this.getdata()
+    this.height = `${document.body.clientHeight - this.headerHeight - this.$refs.button_box.offsetHeight}px`
+    bus.$emit('changeHideOverLeftStatus', false)
   }
 }
 </script>
 
 <style lang="less" scoped>
+@font-face {
+  font-family: 'money';   /*字体名称*/
+          src: url('../../assets/font/DIN-Medium.eot') format('embedded-opentype'), /* IE6-IE8 */
+              url('../../assets/font/DIN-Medium.woff') format('woff'),
+              url('../../assets/font/DIN-Medium.ttf') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+              url('../../assets/font/DIN-Medium.svg') format('svg'); /* iOS 4.1- */
+  font-weight: normal;
+  font-style: normal;
+}
+.svg-icon.top_bg{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 157px;
+}
+.detailsWrapper{
+  width: 92%;
+  margin: 0 auto;
+}
   .details_box{
-    padding-bottom: 15px;
-    background: #FCFCFC;
+    background: #F8F9F9;
+    border-radius: 7px 7px;
     .base_info_box{
       padding: 15px 15px 0 15px;
       overflow: hidden;
-      border-bottom: 1px solid #F7F7F7;
       background: #fff;
+      border-radius: 7px;
+      margin-bottom: 10px;
       ul{
         li{
           list-style: none;
-          margin-bottom: 10px;
+          &:not(:last-child){
+            margin-bottom: 10px;
+          }
           p{
-            font-size: 18px;
-            line-height: 25px;
+            font-size: 16px;
+            line-height: 23px;
             .name_box{
-            color: #333;
-            .svg-icon{
-                font-size: 16px;
-              }
+              color: #333;
+              font-weight: 600;
+              line-height: 25px;
+              .svg-icon{
+                  font-size: 16px;
+                }
             }
             .money{
-              margin-left: 37px;
-              color: #F7912F
+              color: #F7912F;
+              margin-left: 10px;
+              font-family: money;
+              font-size: 12px;
+              em{
+                font-style: normal;
+                font-size: 24px;
+              }
+            }
+            .tag_box{
+              display: inline-block;
+              width: 35px;
+              height: 19px;
+              line-height: 19px;
+              margin-left: 10px;
+              text-align: center;
+              font-size: 12px;
+              color: #fff;
+              border-radius: 4px;
+              &.tao{
+                background:linear-gradient(90deg,#9FE048 0%,#55B72B 100%);
+                box-shadow:1px 1px 4px 0px #9FE048;/* no */
+              }
+              &.you{
+                background:linear-gradient(90deg,#F9C755 0%,#F77925 100%);
+                box-shadow:1px 1px 4px 0px #F9C755;/* no */
+              }
             }
           }
           .time{
+            margin-left: 10px;
             font-size: 12px;
-            color: #999;
+            color: #9b9b9b;
             line-height: 18px;
           }
           .detail_info{
+            margin-top: 20px;
             font-size: 12px;
             line-height: 18px;
             color: #999999;
             span{
+              background:rgba(239,243,253,1);
+              border-radius:4px;
+              color: #1859E1;
+              font-size: 12px;
+              padding:2px 3px;
               &:not(:first-child){
-                margin-left: 27px
-              }
-              .svg-icon{
-                color: #F9D79D;
+                margin-left: 10px
               }
             }
           }
-        }
-      }
-    }
-    .mobile_tip_box{
-      padding: 15px 15px 10px;
-      background: #fff;
-      margin-bottom: 8px;
-      .mobile_box{
-        .mobile_detail{
-          .svg-icon{
-            color: #D8D8D8;
+          &.mobile_tip_box{
+            background: #fff;
+            .mobile_box{
+              .vux-flexbox-item{
+                &:first-child{
+                  text-align: left
+                }
+                &:last-child{
+                  text-align: right;
+                }
+              }
+              .tip{
+                font-size: 13px;
+                line-height: 18px;
+                color: #9B9B9B;
+                line-height: 50px;
+              }
+              .svg-icon{
+                width: 50px;
+                height: 50px;
+              }
+            }
+            .tip_box{
+              margin-top: 30px;
+              p{
+                font-size: 12px;
+                color: #666666;
+                line-height: 18px;
+                font-weight: 500;
+              }
+            }
           }
-          span{
-            margin-left: 3px;
-            font-size: 14px;
-            color: #333;
-            line-height: 20px;
-            font-weight: 500;
-          }
-        }
-        .tip{
-          font-size: 12px;
-          line-height: 18px;
-          color: #4AA7F8;
-        }
-        button{
-          display: block;
-          float: right;
-          padding: 0 4px;
-          line-height: 26px;
-          background:linear-gradient(154deg,rgba(98,192,251,1) 0%,rgba(51,140,245,1) 100%);
-          color: #fff;
-          outline: none;
-          border: none;
-          font-size: 12px;
-          text-align: center
-        }
-      }
-      .tip_box{
-        margin-top: 30px;
-        p{
-          font-size: 12px;
-          color: #666666;
-          line-height: 18px;
-          font-weight: 500;
         }
       }
     }
@@ -233,31 +439,30 @@ export default {
       background: #fff;
       padding: 15px 15px 0 15px;
       margin-bottom: 8px;
+      border-radius: 7px;
       .title{
-        margin-bottom: 8px;
-        font-size: 14px;
+        padding-bottom: 15px;
+        font-size: 16px;
         line-height: 20px;
         color: #333;
-        font-weight: 500;
-        .svg-icon{
-          width: 20px;
-          height: 20px;
-          color: #CECECE;
-          margin-right: 5px;
-        }
+        font-weight: 600;
+        border-bottom:1px solid #EEEEEE;
       }
       .item_box{
         li{
-          padding: 8px 0;
+          padding: 17px 0;
           list-style: none;
           font-size: 14px;
           color: #666666;
           font-weight: 500;
-          line-height: 18px;
+          &:not(:last-child){
+            border-bottom:1px solid #EEEEEE;
+          }
           p{
             text-align: left;
             span{
               float: right;
+              margin-right: 4px;
             }
           }
         }
@@ -265,23 +470,36 @@ export default {
     }
     .asset_info_list{
       margin-bottom: 0;
-      border-bottom: 1px solid #F7F7F7;
     }
-    .button_box{
+  }
+  .confirmText{
+    text-align: center;
+    font-size: 18px;
+  }
+  .button_box{
+      position: fixed;
+      width: 100%;
+      left: 0;
+      bottom: 0px;
       background: #fff;
       overflow: hidden;
+      z-index: 999;
+      padding: 8px 0;
       .button{
-        margin: 52px auto 42px auto;
+        margin: 0 auto;
         display: block;
         width: 91.5%;
         height: 45px;
         border: none;
+        outline: none;
         color: #fff;
         font-size: 18px;
         line-height: 45px;
         background:linear-gradient(151deg,rgba(66,179,249,1) 0%,rgba(31,124,240,1) 100%);
         border-radius:4px; /* no */
       }
+      button[disabled="disabled"]{
+         background: #d8d8d8
+      }
     }
-  }
 </style>

@@ -1,41 +1,50 @@
 <template>
   <div class="ciyt_box">
-    <div class="current_city_box">
-      <h2 class="title">当前城市</h2>
-      <flexbox :gutter="0" wrap="wrap">
-        <flexbox-item :span="4" class="current_city">
-            <svg-icon icon-class="address"></svg-icon>
-            <span>上海</span>
-        </flexbox-item>
-      </flexbox>
-    </div>
-    <div class="has_select_box">
-      <h2 class="title">最多可选五个城市</h2>
-        <flexbox :gutter="0" wrap="wrap">
-          <transition-group name="list" tag="div" class="animate_box">
-            <flexbox-item :span="4" class="selected_city" v-for="(item, index) in selected" :key="index">
-              <div>
+     <scroll
+      ref="indexList"
+      class="wrapper"
+      :listen-scroll="listenScroll"
+      :probe-type="probeType"
+      :click="true"
+      :bounce="{top: false}">
+        <div class="current_city_box">
+          <h2 class="title">当前城市</h2>
+          <flexbox :gutter="0" wrap="wrap">
+            <flexbox-item :span="4" class="current_city">
+                <svg-icon icon-class="address"></svg-icon>
+                <span v-if="currentCity">{{currentCity}}</span>
+                <span v-else>定位中<spinner type="dots" :size="'16px'"></spinner></span>
+            </flexbox-item>
+          </flexbox>
+        </div>
+        <div class="has_select_box">
+          <h2 class="title">最多可选五个城市</h2>
+            <flexbox :gutter="0" wrap="wrap">
+              <transition-group name="list" tag="div" class="animate_box">
+                <flexbox-item :span="4" class="selected_city" v-for="(item, index) in selected" :key="index">
+                  <div>
+                    {{item}}
+                    <svg-icon icon-class="cancel" @click.native="removeData"></svg-icon>
+                  </div>
+                </flexbox-item>
+                </transition-group>
+            </flexbox>
+        </div>
+
+        <div class="hot_city_box">
+          <h2 class="title">热门城市</h2>
+          <flexbox :gutter="0" wrap="wrap">
+            <flexbox-item :span="4" class="hot_city" v-for="(item, index) in hot_city" :key="index">
+              <div @click="setData">
                 {{item}}
-                <svg-icon icon-class="cancel" @click.native="removeData"></svg-icon>
               </div>
             </flexbox-item>
-            </transition-group>
-        </flexbox>
-    </div>
+          </flexbox>
+        </div>
 
-    <div class="hot_city_box">
-      <h2 class="title">热门城市</h2>
-      <flexbox :gutter="0" wrap="wrap">
-        <flexbox-item :span="4" class="hot_city" v-for="(item, index) in hot_city" :key="index">
-          <div @click="setData">
-            {{item}}
-          </div>
-        </flexbox-item>
-      </flexbox>
-    </div>
     <div class="all_city">
-      <ul class="city_box">
-          <li v-for="(value, key, index) in sortgroupcity" :key="index"  class="letter_item">
+      <ul class="city_box" ref="groups">
+          <li v-for="(value, key, index) in sortgroupcity" :key="index"  class="letter_item" ref="listGroup">
               <h4 class="city_title">{{key}}</h4>
               <ul class="letter_city_box">
                   <li v-for="item in value" :key="item.id" class="city_item" @click="setData">
@@ -45,23 +54,47 @@
           </li>
       </ul>
     </div>
+    </scroll>
+    <div class="index-list-nav" @touchstart="onShortcutTouchStart" @touchmove.stop.prevent="onShortcutTouchMove">
+      <ul>
+        <li v-for="(item, index) in shortcutList" :key="index" :data-index="index">{{item}}</li>
+      </ul>
+    </div>
+    <!-- <div class="index-list-fixed" ref="fixed" v-show="fixedTitle">
+      {{fixedTitle}}
+    </div> -->
   </div>
 </template>
 
 <script>
-import { Flexbox, FlexboxItem } from 'vux'
+import { Flexbox, FlexboxItem, Spinner } from 'vux'
+import { mapActions } from 'vuex'
 import groupcity from '@/../static/city.json'
+import bus from '@/utils/eventBus'
+import axios from 'axios'
+import { getData } from '@/utils/dom'
+const ANCHOR_HEIGHT = window.innerHeight <= 480 ? 17 : 18
 export default {
+  name: 'city',
   components: {
     Flexbox,
-    FlexboxItem
+    FlexboxItem,
+    Spinner
   },
   data () {
     return {
-      selected: ['上海'],
+      currentCity: '',
+      selected: [],
       hot_city: ['上海', '北京', '广州', '深圳', '南京', '杭州', '天津', '武汉', '重庆'],
-      arr: []
+      arr: [],
+      currentIndex: 0
     }
+  },
+  created () {
+    this.probeType = 3
+    this.listenScroll = true
+    this.listHeight = []
+    this.touch = {}
   },
   computed: {
     // 将获取的数据按照A-Z字母开头排序
@@ -73,17 +106,49 @@ export default {
         }
       }
       return sortobj
+    },
+    shortcutList () {
+      let list = []
+      for (let i = 65; i <= 90; i++) {
+        if (i !== 73 && i !== 79 && i !== 85 && i !== 86) {
+          list.push(String.fromCharCode(i))
+        }
+      }
+      return list
     }
   },
   methods: {
+    ...mapActions({
+      setCity: 'setCity'
+    }),
+    getCity () {
+      axios({
+        url: 'https://elm.cangdu.org/v1/cities?type=guess',
+        method: 'get',
+        timeout: 5000
+      }).then((res) => {
+        if (res.status === 200) {
+          this.currentCity = res.data.name
+          this.selected = [res.data.name]
+        } else {
+          this.currentCity = '上海'
+          this.selected = ['上海']
+        }
+      }).catch((err) => {
+        this.city = '上海'
+        this.selected = ['上海']
+        console.log(err)
+      })
+    },
     indexOf (arr, val) {
+      let status = -1
       for (var i = 0; i < arr.length; i++) {
-        if (arr[i] === val) {
-          return i
+        if (arr[i].trim() === val.trim()) {
+          status = i
         }
       }
 
-      return -1
+      return status
     },
     remove (arr, val) {
       var index = this.indexOf(arr, val)
@@ -94,6 +159,7 @@ export default {
     setData (e) {
       if (this.selected.length === 5) {
         this.$vux.toast.text('最多只能选择五个城市', 'middle')
+        this.$refs.indexList.scrollTo(0, 0, 100)
       } else {
         let city = e.target.innerText
         if (this.selected.length === 0) {
@@ -113,22 +179,77 @@ export default {
         this.arr = [...newArr]
         let newSelected = new Set(this.selected.concat(this.arr))
         this.selected = [...newSelected]
+        this.$refs.indexList.scrollTo(0, 0, 100)
       }
     },
     removeData (e) {
-      this.remove(this.selected, e.path[2].innerText)
-      this.remove(this.arr, e.path[2].innerText)
+      // console.log(e.target.parentNode.parentNode.innerText)
+      this.remove(this.selected, e.target.parentNode.parentNode.innerText)
+      this.remove(this.arr, e.target.parentNode.parentNode.innerText)
       // console.log(e.path[2].innerText)
+    },
+    _calculateHeight () {
+      const list = this.$refs.listGroup
+      if (!list) {
+        return
+      }
+      this.listHeight = []
+      let height = 46
+      this.listHeight.push(height)
+      for (let i = 0; i < list.length; i++) {
+        let item = list[i]
+        height += item.clientHeight
+        this.listHeight.push(height)
+      }
+    },
+    _scrollTo (index) {
+      if (!index && index !== 0) {
+        return
+      }
+      if (index < 0) {
+        index = 0
+      } else if (index > this.listHeight.length - 2) {
+        index = this.listHeight.length - 2
+      }
+      this.$refs.indexList.scrollToElement(this.$refs.listGroup[index], 100)
+    },
+    onShortcutTouchStart (e) {
+      let anchorIndex = getData(e.target, 'index')
+      let firstTouch = e.touches[0]
+      this.touch.y1 = firstTouch.pageY
+      this.touch.anchorIndex = anchorIndex
+      this._scrollTo(anchorIndex)
+    },
+    onShortcutTouchMove (e) {
+      let firstTouch = e.touches[0]
+      this.touch.y2 = firstTouch.pageY
+      let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0
+      let anchorIndex = parseInt(this.touch.anchorIndex) + delta
+      this._scrollTo(anchorIndex)
     }
   },
+  watch: {
+  },
   mounted () {
-    // console.log(this.sortgroupcity)
+    this.getCity()
+    bus.$on('setFilterCity', () => {
+      this.setCity(this.selected)
+    })
+    setTimeout(() => {
+      this._calculateHeight()
+    }, 20)
   }
 }
 </script>
 
 <style lang="less" scoped>
 .ciyt_box{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  .wrapper{
+    height: calc(100vh - 47px);
+  }
   .title{
     font-size: 14px;
     line-height: 18px;
@@ -148,10 +269,13 @@ export default {
       .svg-icon{
         color: #CECECE;
       }
+      .vux-spinner{
+        margin-top: -4px;
+      }
     }
   }
   .has_select_box{
-    padding: 0 15px;
+    padding: 0 50px 0 15px;
     padding-bottom: 15px;
     border-bottom: 1px solid #d9d9d9;
     .animate_box{
@@ -207,7 +331,7 @@ export default {
     }
   }
   .hot_city_box{
-    padding: 0 15px;
+    padding: 0 50px 0 15px;
     .hot_city{
       margin-bottom: 15px!important;
        div{
@@ -230,7 +354,7 @@ export default {
           background: #EEEEEE;
           color: #333;
           font-size: 14px;
-          line-height: 26px;
+          line-height: 26px;/* no */
         }
         .letter_city_box{
           padding: 0 15px;
@@ -244,6 +368,40 @@ export default {
         }
       }
     }
+  }
+  .index-list-nav{
+    position: absolute;
+    z-index: 30;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    ul{
+      padding: 0;
+      margin: 0;
+      li{
+        list-style: none;
+        padding: 6px 10px 0;
+        line-height: 1;
+        text-align: center;
+        box-sizing: border-box;
+        &:active{
+          color: #FF6969;
+        }
+      }
+    }
+  }
+  .index-list-fixed{
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-left: 15px;
+    font-weight: normal;
+    background: #EEEEEE;
+    color: #333;
+    font-size: 14px;
+    line-height: 26px;/* no */
   }
 }
 </style>

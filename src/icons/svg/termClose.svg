@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>关闭(2)</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M-5.68434189e-14,7.38964445e-13 L750,7.38964445e-13 L750,258 C625.786499,294.63111 501.119832,312.946664 376,312.946664 C250.880168,312.946664 125.546834,294.63111 -5.68434189e-14,258 L-5.68434189e-14,7.38964445e-13 Z" id="path-1"></path>
+        <linearGradient x1="-152.032488%" y1="73.3626703%" x2="57.8543125%" y2="17.238663%" id="linearGradient-3">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="12.25订单详情-积分中心" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="客户详情" transform="translate(-689.000000, -136.000000)">
+            <g id="椭圆形-+-椭圆形-copy-Mask">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#1859E1" fill-rule="nonzero" xlink:href="#path-1"></use>
+                <circle id="椭圆形-copy" fill="url(#linearGradient-3)" fill-rule="nonzero" mask="url(#mask-2)" cx="633" cy="353" r="257"></circle>
+            </g>
+            <rect id="矩形" fill-opacity="0.7" fill="#FFFFFF" x="0" y="130" width="750" height="78"></rect>
+            <g id="关闭" transform="translate(689.000000, 136.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                <g id="关闭(2)">
+                    <path d="M16,0 C7.163444,-5.41083001e-16 1.082166e-15,7.163444 0,16 C-1.082166e-15,24.836556 7.163444,32 16,32 C24.836556,32 32,24.836556 32,16 C32,7.163444 24.836556,4.09379668e-15 16,0 Z M22.36,11.02 L17.4,16 L22.3,20.9 C22.6435185,21.2806191 22.6435185,21.8593809 22.3,22.24 C21.9164468,22.5957172 21.3235532,22.5957172 20.94,22.24 L16,17.42 L11.06,22.34 C10.6734007,22.7265993 10.0465993,22.7265993 9.66000003,22.34 C9.27340071,21.9534007 9.2734007,21.3265993 9.66,20.94 L14.56,16 L9.64,11.08 C9.45068735,10.8922334 9.34420168,10.6366375 9.34420168,10.37 C9.34420168,10.1033625 9.45068735,9.8477666 9.64,9.66 C9.82146666,9.46664555 10.0748282,9.35696271 10.34,9.35696271 C10.6051718,9.35696271 10.8585333,9.46664555 11.04,9.66 L16,14.58 L20.96,9.64 C21.1477666,9.45068735 21.4033625,9.34420168 21.67,9.34420168 C21.9366375,9.34420168 22.1922334,9.45068735 22.38,9.64 C22.7611429,10.0288435 22.7611429,10.6511565 22.38,11.04 L22.36,11.02 Z" id="形状"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

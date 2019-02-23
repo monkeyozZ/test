@@ -1,1 +1,16 @@
-<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1538213963829" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="32408" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M919.8 381.1L555.2 779.8a57.377 57.377 0 0 1-43.1 19.5c-16.5 0-32.2-7.1-43.1-19.5L104.4 381.1c-17.8-18.8-23.3-46.2-14.1-70.4s31.4-41.1 57.2-43.4h728.9c25.9 2.2 48.2 19 57.4 43.3 9.3 24.3 3.8 51.6-14 70.5z" p-id="32409"></path></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51 (57462) - http://www.bohemiancoding.com/sketch -->
+    <title>Rectangle 7</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="常见问题" transform="translate(-340.000000, -323.000000)">
+            <g id="Group-6" transform="translate(340.000000, 323.000000)" fill="#666666" fill-rule="nonzero">
+                <g id="下拉" transform="translate(0.000000, 4.000000)">
+                    <path d="M8.99637341,10.504067 C8.63135235,10.5040596 8.28166831,10.3572734 8.0260072,10.0967409 L0.388888302,2.31130993 C-0.136694446,1.77545718 -0.128539897,0.914588881 0.407313925,0.389004042 C0.943469786,-0.137032317 1.80388447,-0.12827156 2.32961981,0.407429665 L8.9965125,7.20375831 L15.6634052,0.407429665 C16.1891467,-0.128487846 17.0497914,-0.136738552 17.585711,0.389004026 C18.1216286,0.914745643 18.1298793,1.77539027 17.6041367,2.31130992 L9.96672518,10.0967409 C9.71108492,10.3573039 9.36138625,10.5040942 8.99635886,10.504067 L8.99637341,10.504067 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

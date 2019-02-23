@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="99px" height="99px" viewBox="0 0 99 99" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>备忘灰色</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-5.2%" y="-15.0%" width="110.4%" height="130.0%" filterUnits="objectBoundingBox" id="filter-1">
+            <feGaussianBlur stdDeviation="12" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-58.8%" y="-58.8%" width="217.6%" height="217.6%" filterUnits="objectBoundingBox" id="filter-2">
+            <feGaussianBlur stdDeviation="10" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+    </defs>
+    <g id="12.25订单详情-积分中心" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="订单详情" transform="translate(-505.000000, -379.000000)">
+            <g id="备忘灰色" transform="translate(505.000000, 379.000000)">
+                <g transform="translate(19.000000, 15.000000)">
+                    <circle id="椭圆形" fill="#C8C8C8" filter="url(#filter-2)" cx="30.5" cy="34.5" r="25.5"></circle>
+                    <circle id="椭圆形" fill="#C8C8C8" cx="30" cy="30" r="30"></circle>
+                    <g id="备注(1)" transform="translate(18.000000, 16.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                        <path d="M21.5378947,0.00564102564 L2.47529825,0.00564102564 C1.12435088,0.00564102564 0.029122807,1.07271795 0.029122807,2.38909402 L0.029122807,25.6085812 C0.029122807,26.9248889 1.12431579,27.9920342 2.47529825,27.9920342 L21.5378947,27.9920342 C22.8888421,27.9920342 23.9840702,26.9249231 23.9840702,25.6085812 L23.9840702,2.38909402 C23.9840702,1.07278632 22.8888772,0.00564102564 21.5378947,0.00564102564 Z M4.81642105,7.00235897 L11.9789123,7.00235897 L11.9789123,9.24126496 L4.81642105,9.24126496 L4.81642105,7.00235897 Z M19.1860351,23.1978803 L4.81642105,23.1978803 L4.81642105,20.9589744 L19.1860351,20.9589744 L19.1860351,23.1978803 Z M19.1860351,16.2195897 L4.81642105,16.2195897 L4.81642105,13.9806838 L19.1860351,13.9806838 L19.1860351,16.2195897 Z" id="形状"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

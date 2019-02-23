@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="99px" height="99px" viewBox="0 0 99 99" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>电话灰色</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-5.2%" y="-15.0%" width="110.4%" height="130.0%" filterUnits="objectBoundingBox" id="filter-1">
+            <feGaussianBlur stdDeviation="12" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-58.8%" y="-58.8%" width="217.6%" height="217.6%" filterUnits="objectBoundingBox" id="filter-2">
+            <feGaussianBlur stdDeviation="10" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+    </defs>
+    <g id="12.25订单详情-积分中心" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="订单详情" transform="translate(-605.000000, -379.000000)">
+            <g id="电话灰色" transform="translate(605.000000, 379.000000)">
+                <g transform="translate(19.000000, 15.000000)">
+                    <circle id="椭圆形" fill="#C8C8C8" filter="url(#filter-2)" cx="30.5" cy="34.5" r="25.5"></circle>
+                    <circle id="椭圆形" fill="#C8C8C8" cx="30" cy="30" r="30"></circle>
+                    <g id="电话" transform="translate(16.000000, 16.000000)" fill="#FFFFFF">
+                        <path d="M20.1784667,16.3961 C18.7219333,16.3961 17.6558,17.6574333 16.395,17.6574333 C15.1352667,17.6574333 9.4622,12.1059667 9.4622,10.7246333 C9.4622,9.3481 10.7214,8.67876669 10.7214,7.25796666 C10.7214,6.23716666 6.93953334,0.0131666563 5.3646,0.0131666563 C3.78966666,0.0126333438 0.00833334375,2.8105 0.00833334375,5.36943334 C0.00833334375,12.8531667 13.7955333,27.1123667 22.3838,27.1123667 C24.7486,27.1123667 27.7416667,24.6281 27.7416667,21.7545 C27.7416667,20.7694333 21.5960667,16.3961 20.1784667,16.3961 Z" id="路径"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

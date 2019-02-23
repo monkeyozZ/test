@@ -12,9 +12,10 @@
       :readonly="readonly"
       :disabled="disabled"
       :autocomplete="autocomplete"
-
+      :minlength="minlength"
+      :maxlength="maxlength"
       :required="required"
-
+      @keyup="handleKeyup"
       @focus="handleFocus"
       @blur="handleBlur"
       @input="handleModelInput"
@@ -31,9 +32,10 @@
       :readonly="readonly"
       :disabled="disabled"
       :autocomplete="autocomplete"
-
+      :minlength="minlength"
+      :maxlength="maxlength"
       :required="required"
-
+      @keyup="handleKeyup"
       @focus="handleFocus"
       @blur="handleBlur"
       @input="handleModelInput"
@@ -51,13 +53,11 @@
       :disabled="disabled"
       :autocomplete="autocomplete"
 
-      :max="max"
-      :min="min"
-      :step="step"
       :minlength="minlength"
       :maxlength="maxlength"
+      :step="step"
       :required="required"
-
+      @keyup="handleKeyup"
       @focus="handleFocus"
       @blur="handleBlur"
       @input="handleModelInput"
@@ -75,11 +75,10 @@
       :disabled="disabled"
       :autocomplete="autocomplete"
 
-      :max="max"
-      :min="min"
+      :minlength="minlength"
       :step="step"
       :required="required"
-
+      @keyup="handleKeyup"
       @focus="handleFocus"
       @blur="handleBlur"
       @input="handleModelInput"
@@ -98,7 +97,9 @@
       :autocomplete="autocomplete"
 
       :required="required"
+      :minlength="minlength"
       :maxlength="maxlength"
+      @keyup="handleKeyup"
       @focus="handleFocus"
       @blur="handleBlur"
       @input="handleModelInput"
@@ -119,17 +120,17 @@
       :minlength="minlength"
       :maxlength="maxlength"
       :required="required"
-
+      @keyup="handleKeyup"
       @focus="handleFocus"
       @blur="handleBlur"
       @input="handleModelInput"
     >
 
     <span class="material-input-bar"></span>
-
-    <label class="material-label">
+    <svg-icon icon-class="close" class="close" v-if="showClose" @click.native="clearValue"></svg-icon>
+    <!-- <label class="material-label">
       <slot></slot>
-    </label>
+    </label> -->
 
     <div v-if="errorMessages" class="material-errors">
       <div v-for="(error, index) in computedErrors" class="material-error" :key="index">
@@ -177,8 +178,14 @@ export default {
       this.focus = false
       this.$emit('validateFun')
     },
+    handleKeyup () {
+      this.$emit('clearErrMsg')
+    },
     copyValue (value) {
       this.valueCopy = value
+    },
+    clearValue () {
+      this.$emit('clear')
     }
   },
   watch: {
@@ -248,12 +255,20 @@ export default {
     errorMessages: {
       type: [Array, String],
       default: null
+    },
+    showClose: {
+      type: Boolean,
+      default: false
     }
   }
 }
 </script>
 
 <style  lang="less" scoped>
+input::-webkit-input-placeholder{
+  color: #CCCCCC;
+  font-size: 16px;
+}
  .material-input__component .material-input-bar:after, .material-input__component .material-input-bar:before {
   content: "";
   height: 1px;
@@ -270,18 +285,18 @@ export default {
   }
   .material-input {
     font-size: 16px;
-    padding: 12px 0px 12px 8px;
+    padding: 12px 0px 12px 0px;
     display: block;
     width: 100%;
     border: none;
     border-radius: 0;
     background: none;
     color: black;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;/* no */
     &:focus {
       outline: none;
       border: none;
-      border-bottom: 1px solid transparent;
+      border-bottom: 1px solid transparent;/* no */
     }
   }
   .material-label {
@@ -305,6 +320,12 @@ export default {
     &:after {
       right: 50%;
     }
+  }
+  .close{
+    position: absolute;
+    right: 5px;
+    top: 12px;
+    color: #999999;
   }
   &.material--disabled {
     .material-input {
@@ -340,9 +361,9 @@ export default {
   }
   &.material--has-errors {
     &.material--active {
-      .material-label {
+      /* .material-label {
         color: #f44336;
-      }
+      } */
     }
     .material-errors {
       color: #f44336;

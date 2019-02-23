@@ -107,6 +107,9 @@ export default {
     },
     bounce: {
       default: true
+    },
+    stopPropagation: {
+      default: true
     }
   },
   data () {
@@ -136,7 +139,7 @@ export default {
   mounted () {
     setTimeout(() => {
       this.initScroll()
-    }, 20)
+    }, 30)
   },
   methods: {
     initScroll () {
@@ -144,7 +147,14 @@ export default {
         return
       }
       if (this.$refs.listWrapper && (this.pullDownRefresh || this.pullUpLoad)) {
-        this.$refs.listWrapper.style.minHeight = `${getRect(this.$refs.wrapper).height + 1}px`
+        setTimeout(() => {
+          this.$refs.listWrapper.style.minHeight = `${getRect(this.$refs.wrapper).height + 1}px`
+        }, 40)
+      }
+      if (this.$refs.listWrapper) {
+        setTimeout(() => {
+          this.$refs.listWrapper.style.minHeight = `${getRect(this.$refs.wrapper).height}px`
+        }, 40)
       }
       let options = {
         probeType: this.probeType,
@@ -158,11 +168,13 @@ export default {
         freeScroll: this.freeScroll,
         mouseWheel: this.mouseWheel,
         bounce: this.bounce
+        // stopPropagation: this.stopPropagation
       }
       this.scroll = new BScroll(this.$refs.wrapper, options)
       if (this.listenScroll) {
         this.scroll.on('scroll', (pos) => {
           this.$emit('scroll', pos)
+          this.$emit('calcHeight', pos, this.scroll.movingDirectionY)
         })
       }
       if (this.listenBeforeScroll) {
@@ -176,6 +188,16 @@ export default {
       if (this.pullUpLoad) {
         this._initPullUpLoad()
       }
+    },
+    returnScroll () {
+      if (this.scroll) {
+        return true
+      } else {
+        return false
+      }
+    },
+    getCurrentPage () {
+      return this.scroll.getCurrentPage()
     },
     disable () {
       this.scroll && this.scroll.disable()

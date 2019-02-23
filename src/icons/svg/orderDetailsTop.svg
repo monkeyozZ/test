@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="750px" height="313px" viewBox="0 0 750 313" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>top背景</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M-5.68434189e-14,7.38964445e-13 L750,7.38964445e-13 L750,258 C625.786499,294.63111 501.119832,312.946664 376,312.946664 C250.880168,312.946664 125.546834,294.63111 -5.68434189e-14,258 L-5.68434189e-14,7.38964445e-13 Z" id="path-1"></path>
+        <linearGradient x1="-152.032488%" y1="73.3626703%" x2="57.8543125%" y2="17.238663%" id="linearGradient-3">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="12.25订单详情-积分中心" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="订单详情">
+            <g id="top背景">
+                <g id="椭圆形-+-椭圆形-copy-Mask">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Mask" fill="#1859E1" fill-rule="nonzero" xlink:href="#path-1"></use>
+                    <circle id="椭圆形" fill="url(#linearGradient-3)" fill-rule="nonzero" opacity="0.712983631" mask="url(#mask-2)" cx="407" cy="405" r="201"></circle>
+                    <circle id="椭圆形-copy" fill="url(#linearGradient-3)" fill-rule="nonzero" mask="url(#mask-2)" cx="633" cy="353" r="257"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

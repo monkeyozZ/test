@@ -1,30 +1,47 @@
 <template>
   <div class="register">
-    <svg-icon icon-class="close" class="close" @click.native="GoBack"></svg-icon>
-    <h1 class="title">设置登录密码</h1>
+    <svg-icon icon-class="loginBack" class="close" @click.native="GoBack"></svg-icon>
+    <h1 class="title">设置密码</h1>
+    <h2 class="title2">设置一个好记的密码吧~</h2>
     <div class="form_box">
       <div class="passsword_box">
-        <my-input :type="inputType" v-model="form.password" @validateFun="passValidate" @resetValidate="resetPassValidate" :errorMessages="passErrorMsg" :maxlength="16">
-        请输入6-16位数字或字母
+        <my-input :type="inputType"
+        v-model="form.password"
+        @validateFun="passValidate"
+        @resetValidate="resetPassValidate"
+        :errorMessages="passErrorMsg"
+        :maxlength="16"
+        placeholder="请输入6-16位数字与字母组合">
         </my-input>
-        <svg-icon :icon-class="iconType" class="eye" @click.native="showPassword"></svg-icon>
+        <div class="eye" @click="showPassword">
+          <svg-icon :icon-class="iconType"></svg-icon>
+        </div>
       </div>
-      <my-input type="text" v-model="form.inviteCode">
-        请输入邀请人的邀请码 (选填)
+      <h3 class="invite_title">选填</h3>
+      <my-input type="text"
+      v-model="form.inviteCode"
+      @validateFun="inviteValidate"
+      @resetValidate="resetInviteValidate"
+      :errorMessages="inviteErrorMsg"
+      :maxlength="6"
+      placeholder="邀请人邀请码">
       </my-input>
     </div>
+    <button class="submit" @click="submit" :disabled="isdisable">注册</button>
     <div class="xieyi">
-      <check-icon :value.sync="ischeck">阅读并同意</check-icon>
-      <router-link to="/xieyi">《接单宝用户协议》</router-link>
-      <p class="error" v-if="showCheckError">请勾选《接单宝用户协议》</p>
+      <check-icon :value.sync="ischeck">阅读并愿意遵守</check-icon>
+      <router-link to="/xieyi">《淘单宝用户协议》</router-link>
+      <p class="error" v-if="showCheckError">请勾选《淘单宝用户协议》</p>
     </div>
-    <x-button class="submit" action-type="button" :show-loading="loading" @click.native="submit" :disabled="isdisable">注册</x-button>
   </div>
 </template>
 
 <script>
 import MyInput from '@/components/input'
 import { XButton, CheckIcon } from 'vux'
+import { mapGetters, mapActions } from 'vuex'
+import registerAndLoginApi from '@/api/registerAndLogin'
+import bus from '@/utils/eventBus'
 export default {
   components: {
     MyInput,
@@ -35,37 +52,76 @@ export default {
     return {
       form: {
         password: '',
-        inviteCode: null
+        inviteCode: ''
       },
       passErrorMsg: '',
+      inviteErrorMsg: '',
       inputType: 'password',
       iconType: 'closeEye',
       ischeck: true,
-      loading: false,
       showCheckError: false,
-      isSubmit: '',
-      isdisable: false
+      isdisable: true,
+      registerGift: false
     }
   },
+  computed: {
+    mobile () {
+      return this.$route.query.mobile
+    },
+    verifyCode () {
+      return this.$route.query.verifyCode
+    },
+    inviteBy () {
+      return this.$route.query.inviteBy
+    },
+    ...mapGetters(['user_info'])
+  },
+  created () {
+    this.form.inviteCode = this.$route.query.inviteBy ? this.$route.query.inviteBy : ''
+  },
   methods: {
+    ...mapActions({
+      setJdbAuthToken: 'setJdbAuthToken',
+      setLoginstatus: 'setLoginstatus'
+    }),
     passValidate () {
       if (this.form.password.length !== 0) {
         let passRegex = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/
         if (!passRegex.test(this.form.password)) {
           this.passErrorMsg = '请输入6-16位数字与字母组合'
-          this.isSubmit = false
+          return false
         } else {
-          this.isSubmit = true
+          this.passErrorMsg = ''
+          return true
         }
       } else {
         this.passErrorMsg = '请设置密码'
-        this.isSubmit = false
+        this.isdisable = true
+        return false
+      }
+    },
+    inviteValidate () {
+      if (this.form.inviteCode.length !== 0) {
+        let reg = /^[0-9a-zA-Z]{6}$/
+        if (!reg.test(this.form.inviteCode)) {
+          this.inviteErrorMsg = '邀请码格式错误'
+          return false
+        } else {
+          return true
+        }
+      } else {
+        this.inviteErrorMsg = ''
+        return true
       }
     },
     resetPassValidate () {
       this.passErrorMsg = ''
     },
+    resetInviteValidate () {
+      this.inviteErrorMsg = ''
+    },
     showPassword () {
+      this.passErrorMsg = ''
       if (this.iconType === 'closeEye') {
         this.iconType = 'eye'
         this.inputType = 'text'
@@ -75,22 +131,49 @@ export default {
       }
     },
     submit () {
-      if (this.isSubmit.length !== 0) {
-        if (this.isSubmit) {
-          if (!this.ischeck) {
-            this.showCheckError = true
-          } else {
-            // 提交
-            this.isdisable = true
-            this.loading = true
+      console.log(this.inviteValidate(), this.passValidate())
+      if (this.passValidate() && this.inviteValidate()) {
+        if (!this.ischeck) {
+          this.showCheckError = true
+        } else {
+          // 提交
+          let obj = {
+            mobile: this.mobile,
+            password: this.form.password,
+            inviteBy: this.form.inviteCode,
+            verifyCode: this.verifyCode,
+            openId: this.user_info.openId ? this.user_info.openId : ''
           }
+          this.isdisable = true
+          registerAndLoginApi.register(obj).then((res) => {
+            if (res.data.code === 0) {
+              this.setJdbAuthToken(res.data.data)
+              this.setLoginstatus(true)
+              this.$router.push({path: '/'})
+              setTimeout(() => {
+                bus.$emit('closeLead')
+                bus.$emit('showGiftDialog')
+              }, 50)
+            } else {
+              this.inviteErrorMsg = res.data.msg
+              this.isdisable = false
+            }
+          }).catch((err) => {
+            if (err) {
+              this.isdisable = false
+            }
+          })
         }
-      } else {
-        this.passValidate()
       }
     },
     GoBack () {
-      history.back(-1)
+      document.activeElement.blur() // 部分手机在键盘未关闭时返回导致页面高度变小
+      setTimeout(() => {
+        history.back(-1)
+      }, 400)
+    },
+    scrollTOBottom () {
+      window.scrollTo(0, 0)
     }
   },
   watch: {
@@ -100,44 +183,75 @@ export default {
           this.showCheckError = false
         }
       }
-    }
+    },
+    'form.password': {
+      handler () {
+        if (this.form.password.length >= 6) {
+          this.isdisable = false
+        } else {
+          this.isdisable = true
+        }
+      }
+    },
+    deep: true
+  },
+  mounted () {
+    this.scrollTOBottom()
   }
 }
 </script>
 
 <style lang="less" scoped>
   .register{
-    padding: 0 28px;
+    padding: 0 20px;
     .close{
       margin-top: 30px;
-      font-size: 15px;
-      width: 15px;
-      height: 15px;
+      width: 25px;
+      height: 25px;
       color: #444444;
     }
     .title{
-      margin: 21px 0 14px 0;
-      font-size: 24px;
-      line-height: 33px;
-      font-family:PingFangSC-Medium;
+      margin: 21px 0 8px 0;
+      font-size: 27px;
+      color: #2F2926;
+      line-height: 38px;
+      font-family:PingFangTC-Medium;
+      font-weight: 500;
+    }
+    .title2{
+      font-size: 17px;
+      color: #999999;
+      line-height: 24px;
+      font-family:PingFangTC-Medium;
+      font-weight: 500;
     }
     .form_box{
-      margin-top: 90px;
+      margin-top: 10px;
       .passsword_box{
         position: relative;
-        margin-bottom: 45px;
+        margin: 25px 0 30px 0;
         .eye{
           position: absolute;
           top: 50%;
-          right: 2px;
+          right: 0px;
+          width: 42px;
+          height: 35px;
+          line-height: 42px;
+          text-align: center;
           transform: translate(0,-50%);
-          color:#EEEEEE;
+          color:#979797;
         }
+      }
+      .invite_title{
+        font-size: 16px;
+        color: #565656;
+        font-weight: 500;
       }
     }
     .xieyi{
       position: relative;
       margin-top: 20px;
+      text-align: center;
       a{
         color: #1F7CF0;
         font-size: 14px;
@@ -145,6 +259,8 @@ export default {
       }
       .error{
         position: absolute;
+        width: 100%;
+        text-align: center;
         font-size: 12px;
         color: #FF5136;
         bottom: 0;
@@ -153,11 +269,23 @@ export default {
       }
     }
     .submit{
-      margin-top: 35px;
-      background:linear-gradient(151deg,rgba(66,179,249,1) 0%,rgba(31,124,240,1) 100%);
-      border-radius:4px;
-      color: #fff;
-      line-height: 47px;
-    }
+          display: block;
+          margin: 25px auto;
+          width: 100%;
+          line-height: 47px;
+          border: none;
+          outline: none;
+          border-radius: 25px;
+          font-size: 18px;
+          color: #fff;
+          background: #347FFF;
+          &::after{
+            content: none;
+            border: none;
+          }
+          &:disabled{
+            background: #A4C6FE;
+          }
+        }
   }
 </style>

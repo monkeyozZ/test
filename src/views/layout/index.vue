@@ -1,8 +1,10 @@
 <template>
-  <div class="main">
-    <my-header></my-header>
-    <router-view></router-view>
-    <my-tabbar v-if="$route.path === '/'|| $route.path === '/customer'"></my-tabbar>
+  <div class="main" :class="{paddingTop: isHadHeader}">
+    <my-header v-if="$route.path !== '/setcurrentcity'"></my-header>
+    <keep-alive include="index,customer,filters,city,certification,uploadIdcard,uploadAptitudes,news">
+      <router-view></router-view>
+    </keep-alive>
+    <my-tabbar v-if="$route.path === '/'|| $route.path === '/customer'|| $route.path === '/own'"></my-tabbar>
   </div>
 </template>
 
@@ -15,11 +17,33 @@ export default {
     MyTabbar
   },
   data () {
-    return {}
+    return {
+      isHadHeader: true
+    }
+  },
+  watch: {
+    '$route': {
+      handler () {
+        if (new RegExp('setcurrentcity').test(this.$route.path)) {
+          this.isHadHeader = false
+        } else {
+          this.isHadHeader = true
+        }
+      }
+    }
+  },
+  mounted () {
+    if (new RegExp('setcurrentcity').test(this.$route.path)) {
+      this.isHadHeader = false
+    } else {
+      this.isHadHeader = true
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
-
+.paddingTop{
+  padding-top: 44px;
+}
 </style>
