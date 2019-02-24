@@ -3,7 +3,9 @@
     <swiper v-if="isKeep" :options="swiperOption" ref="mySwiper">
         <!-- slides -->
         <swiper-slide>
-          <a :href="login_status?'javascript:;':bannerArr[0].link">
+          <a :href="login_status?'javascript:;':bannerArr[0].link"
+          @click="statistics('点击banner', {'bannerUrl': bannerArr[0].imgSrc?baseUrl + bannerArr[0].imgSrc: ''})
+          ">
             <img :src="bannerArr[0].imgSrc?baseUrl + bannerArr[0].imgSrc: ''">
           </a>
         </swiper-slide>

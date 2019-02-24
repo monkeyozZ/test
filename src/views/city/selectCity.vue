@@ -101,6 +101,7 @@ export default {
       cityTools.setCurrentCity(city)
       this.setServerCity(city)
       // this.$refs.indexList.scrollTo(0, 0, 100)
+      this.statistics('选择抢单城市', {'cityName': city})
       this.$router.push('/')
     },
     setServerCity (city) {

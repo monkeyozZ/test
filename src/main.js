@@ -11,6 +11,7 @@ import scroll from '@/components/scroll/index' // scroll
 import filters from '@/filters' // 过滤器
 import waves from '@/directive/waves' // 水波纹指令
 /* import '@/utils/vConsole.js' */
+import zhuge from '@/utils/zhuge.js'
 import { ToastPlugin, ConfigPlugin, LoadingPlugin, WechatPlugin } from 'vux'
 const FastClick = require('fastclick') // 移除移动端页面点击延迟
 FastClick.attach(document.body)
@@ -20,6 +21,7 @@ Vue.use(ConfigPlugin, {
   $layout: 'VIEW_BOX'
 })
 Vue.use(WechatPlugin)
+Vue.use(zhuge) // 诸葛io
 Vue.component('scroll', scroll)
 Vue.config.productionTip = false
 Vue.directive('waves', waves)

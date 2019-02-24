@@ -1101,6 +1101,7 @@ export default {
     orderCondition: {
       handler () {
         this.getList()
+        this.statistics('抢单筛选', {'type': this.customerType === 'OPTIMIZATION' ? '优选' : '淘单', 'options': this.orderCondition})
       }
     },
     currentCity: {
