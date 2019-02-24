@@ -4,8 +4,8 @@
      <group label-width="4.5em" label-margin-right="2em" label-align="center">
        <x-input title="姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名" placeholder="请输入真实姓名" text-align="right" placeholder-align="right" v-model="form.name" ref="name" :disabled="nameDisabled" @on-blur="scrollTOBottom"></x-input>
        <x-input title="身份证号" placeholder="请输入身份证号" placeholder-align="right" text-align="right" v-model="form.idCard" type="text" :max="18" @on-blur="validateIdCard" :disabled="idcardDisabled"></x-input>
-       <x-input title="机构名称" placeholder="请输入机构名称" placeholder-align="right" text-align="right" v-model="form.orgName" :disabled="orgNameDisabled" @on-blur="scrollTOBottom"></x-input>
-       <popup-picker title="机构类型" @on-hide="cancel" :data="list" v-model="form.category" value-text-align="right" :disabled="categoryDisabled"></popup-picker>
+       <x-input title="机构名称" placeholder="请输入机构名称" placeholder-align="right" text-align="right" v-model="form.orgName" :disabled="orgNameDisabled" @on-blur="scrollTOBottom2"></x-input>
+       <popup-picker title="机构类型" @on-hide="cancel" :data="list" v-model="form.category" value-text-align="right" :disabled="categoryDisabled" @on-change="statistics('认证-输入机构类型', {})"></popup-picker>
      </group>
      <h2 class="title">上传证明</h2>
      <group label-width="4.5em" label-margin-right="2em" label-align="center">
@@ -164,7 +164,9 @@ export default {
             if (res.data.code === -1) {
               this.form.idCard = ''
               this.$vux.toast.text(res.data.msg, 'top')
+              this.statistics('认证-输入身份证号-已认证', {})
             }
+            this.statistics('认证-输入身份证号', {})
           }).catch((err) => {
             console.log(err)
           })
@@ -234,6 +236,7 @@ export default {
         if (this.aptitudes.logoImg !== null) {
           obj.logoImgId = this.aptitudes.logoImg
         }
+        this.statistics('提交认证', {})
         // api请求
         userCreditApi.certification(obj).then((res) => {
           if (res.data.code === 0) {
@@ -325,6 +328,11 @@ export default {
     },
     scrollTOBottom () {
       window.scrollTo(0, 0)
+      this.statistics('认证-输入姓名', {})
+    },
+    scrollTOBottom2 () {
+      window.scrollTo(0, 0)
+      this.statistics('认证-输入机构名称', {})
     }
   },
   beforeRouteLeave (to, from, next) {
